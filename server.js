@@ -21,30 +21,31 @@ a terminado su ejecucion. cuando hacemos una operacion en node, esta operacion
 va a una cola de operaciones (eventlopp: ciclo que corre en el procesador constantemente
 verificando que tareas hay por ejecutar, cuando las tareas se ejecutan el va a notificar 
 un evento al modulo que esta pidiendo que se llame esa tarea)*/
-
 /*Los callbacks nos permiten tener aplicaciones que puedan tener alta concurrencia,
  aplicaciones en tiempo real*/
 
-//vamos a crear un callback que se va a ejecutar cada vez que se hace una peticion http
-/*en este caso usaremos una funcion llamada onRequest dentro de http.createServer()*/
-/*request es lo que se nos envia de parte del navegador, response es la respuesta que da el backend*/
+//Ahora vamos a usar eventemiters
+
+/* Un eventemiter es un mecanismo de io.js o de node que me permite emitir eventos
+y escuchar esos eventos*/
+
+/*el server ademas de recibir un callback tambien es un evenemiter */
+
 function onRequest(req, res) {
 	res.end('Aprender usando un repositorio en git es una grandiosa idea')
 }
-
-const server = http.createServer(onRequest)
-
-//Le doy al server el puerto al cual va a escuchar nuestra app
-/*como ultimo parametro .listen puede recibir un callback 
-que se va a ejecutar cuando inicie el server, 
-en este caso el callback va a ser una funcion llamada onListening que no recibe parametros
-pues solo nos va a mostrar un mensaje en la consola que nos indica cuando arranca el server*/
-
 function onListening(){
 	console.log('☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢')
 	console.log('El servidor ha iniciado y está escuchando en el puerto: ' + port)
 }
 
-server.listen(port, onListening)
+const server = http.createServer()
+server.listen(port)
 
-//Desde consola podemos usar $PORT=8081 por ejemplo para cambiar la ruta del puerto
+//Acá estan los evenemiters request, listening...
+//Esto siginifica que en la peticion que se haga al server el va a ejecutar la funcion onReques
+server.on('request', onRequest)
+//Y que cada que este escuchando a un puerto va a ejecutar la funcion onListening
+server.on('listening', onListening)
+
+
