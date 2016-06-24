@@ -26,20 +26,25 @@ un evento al modulo que esta pidiendo que se llame esa tarea)*/
  aplicaciones en tiempo real*/
 
 //vamos a crear un callback que se va a ejecutar cada vez que se hace una peticion http
-/*en este caso usaremos una funcion anonima dentro de http.createServer()*/
+/*en este caso usaremos una funcion llamada onRequest dentro de http.createServer()*/
 /*request es lo que se nos envia de parte del navegador, response es la respuesta que da el backend*/
-const server = http.createServer(function (req, res) {
+function onRequest(req, res) {
 	res.end('Aprender usando un repositorio en git es una grandiosa idea')
-})
+}
+
+const server = http.createServer(onRequest)
 
 //Le doy al server el puerto al cual va a escuchar nuestra app
 /*como ultimo parametro .listen puede recibir un callback 
 que se va a ejecutar cuando inicie el server, 
-en este caso el callback va a ser una funcion anonima que no recibe parametros
+en este caso el callback va a ser una funcion llamada onListening que no recibe parametros
 pues solo nos va a mostrar un mensaje en la consola que nos indica cuando arranca el server*/
-server.listen(port, function(){
+
+function onListening(){
 	console.log('☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢')
 	console.log('El servidor ha iniciado y está escuchando en el puerto: ' + port)
-})
+}
+
+server.listen(port, onListening)
 
 //Desde consola podemos usar $PORT=8081 por ejemplo para cambiar la ruta del puerto
