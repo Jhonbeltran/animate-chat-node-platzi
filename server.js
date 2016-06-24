@@ -15,9 +15,31 @@ const http = require('http')
 const port = process.env.PORT || 8080
 
 //Defino una constante para el servidor
-const server = http.createServer()
+/*Callbacks: funciones que se ejecutan despues de que algun 
+metodo asincrono (node es una plataforma asincrona / no bloquea el io (imput/output))
+a terminado su ejecucion. cuando hacemos una operacion en node, esta operacion 
+va a una cola de operaciones (eventlopp: ciclo que corre en el procesador constantemente
+verificando que tareas hay por ejecutar, cuando las tareas se ejecutan el va a notificar 
+un evento al modulo que esta pidiendo que se llame esa tarea)*/
+
+/*Los callbacks nos permiten tener aplicaciones que puedan tener alta concurrencia,
+ aplicaciones en tiempo real*/
+
+//vamos a crear un callback que se va a ejecutar cada vez que se hace una peticion http
+/*en este caso usaremos una funcion anonima dentro de http.createServer()*/
+/*request es lo que se nos envia de parte del navegador, response es la respuesta que da el backend*/
+const server = http.createServer(function (req, res) {
+	res.end('Aprender usando un repositorio en git es una grandiosa idea')
+})
 
 //Le doy al server el puerto al cual va a escuchar nuestra app
-server.listen(port)
+/*como ultimo parametro .listen puede recibir un callback 
+que se va a ejecutar cuando inicie el server, 
+en este caso el callback va a ser una funcion anonima que no recibe parametros
+pues solo nos va a mostrar un mensaje en la consola que nos indica cuando arranca el server*/
+server.listen(port, function(){
+	console.log('☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢')
+	console.log('El servidor ha iniciado y está escuchando en el puerto: ' + port)
+})
 
 //Desde consola podemos usar $PORT=8081 por ejemplo para cambiar la ruta del puerto
