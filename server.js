@@ -32,6 +32,8 @@ function onRequest(req, res) {
 			//Asi manejamos el error 
 			return res.end(err.message)
 		}
+		//Le indico al navegador que tipo de archivo es, aunque el normalmente ya entiende
+		res.setHeader('Content-Type', 'text/html')
 		res.end(file)
 	})
 }
