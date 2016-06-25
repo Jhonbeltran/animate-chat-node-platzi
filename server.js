@@ -15,31 +15,42 @@ const path = require('path')
 
 
 function onRequest(req, res) {
-	let fileName = path.join(__dirname, 'public', 'index.html')
+	let direccion = req.url
 
-	/*Streams: Mecanismos para poder leer archivos o fuentes de informacion binaria,
-	de forma inteligente, es decir una lectura mucho mas rapida, vamos a usar un stream de lectura
-	y enviarlo a un stream de escritura*/
+	if (direccion.startsWith('/index') || direccion == '/') return serveIndex(res)
 
-	//Creamos un rs = readstream a partir de fileSystem fs
-	let rs = fs.createReadStream(fileName)
+	if (direccion == '/app.js') return serveApp(res)
+	
+	res.statusCode = 404
+	res.end("4040 not found"+direccion)
+}
 
-	//Seteamos el header
+//Esta funcion me va a cargar el archivo index.html
+function serveIndex(res) {
+	let index = path.join(__dirname, 'public', 'index.html')
+	let rs = fs.createReadStream(index)
 	res.setHeader('Content-Type', 'text/html')
-
-	//req y res tambien son streams .___. 
-	//De esta manera (la liena de abajo) ya estoy leyendo el archivo y lo estoy enviando
-	//.pipe es una tuberia ._.
 	rs.pipe(res)
 	
-	//Si hay errores los podemos controlar de la siguente forma
-
 	rs.on('error', function (err) {
-		//No necesitamos el return ._.
+		res.setHeader('Content-Type', 'text/plain')
 		res.end(err.message)
 	})
-	/* Los streams nos permiten manipular canales de informacion haciendo buffering inteligente
-	sin necesidad de tener que cargar todo el bloque en memoria*/
+
+}
+
+//Esta funcion me va a cargar el archico app.js
+function serveApp(res) {
+	let app = path.join(__dirname, 'public', 'app.js')
+	let rs = fs.createReadStream(app)
+	res.setHeader('Content-Type', 'text/javascript')
+	rs.pipe(res)
+	
+	rs.on('error', function (err) {
+		res.setHeader('Content-Type', 'text/plain')
+		res.end(err.message)
+	})
+
 }
 
 function onListening(){
