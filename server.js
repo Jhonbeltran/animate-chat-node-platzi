@@ -9,9 +9,18 @@ const fs = require('fs')
 
 
 function onRequest(req, res) {
-	//Esto de abajo usa un metodo sincrono(esto no es recomendado)
-	let file = fs.readFileSync('public/index.html')
-	res.end(file)
+	//Ahora lo correcto es trabajar con funcionalidades asincronas :)
+	//El ultimo elemento de una funcion asincrona es un callback
+	//En este caso la funcion dentro del readFile va a recibir el archivo despues de que lo cargue
+
+	//Vamos a usar un callback muy comun en node "El error como primer argumento"
+	fs.readFile('public/index.html', function(err, file){
+		if (err){
+			//Asi manejamos el error 
+			return res.end(err.message)
+		}
+		res.end(file)
+	})
 }
 function onListening(){
 	console.log('☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢')
