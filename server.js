@@ -7,6 +7,12 @@ const port = process.env.PORT || 8080
 //Con archivos como un html
 const fs = require('fs')
 
+//Para que nuestro codigo funcione sin problemas en otros sistemas operativos
+//En windows por ejemplo las direcciones son manejadas con \ y no con / 
+//Vamos a usar el siguiente path
+
+const path = require('path')
+
 
 function onRequest(req, res) {
 	//Ahora lo correcto es trabajar con funcionalidades asincronas :)
@@ -14,7 +20,14 @@ function onRequest(req, res) {
 	//En este caso la funcion dentro del readFile va a recibir el archivo despues de que lo cargue
 
 	//Vamos a usar un callback muy comun en node "El error como primer argumento"
-	fs.readFile('public/index.html', function(err, file){
+
+	//Recordemos que el let es usado en vez de var para definir variables con un scope seguro
+	//Para que la variable solo exista dentro de su hambito y no pueda ser usada fuera de el.
+	//let para variables, const para constantes
+
+	let fileName = path.join(__dirname, 'public', 'index.html')
+
+	fs.readFile(fileName, function(err, file){
 		if (err){
 			//Asi manejamos el error 
 			return res.end(err.message)
