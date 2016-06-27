@@ -1,22 +1,26 @@
 {
   "name": "animate-chat-node",
   "version": "1.0.0",
-  "description": "A realtime chat with video and gifs",
+  "description": "A realtime chat with video and gifs in platzi",
   "main": "server.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
   },
   "repository": {
     "type": "git",
-    "url": "git+ssh://git@github.com/Jhonbeltran/animate-chat-node-platzi.git"
+    "url": "git+https://github.com/Jhonbeltran/animate-chat-node-platzi.git"
   },
-  "author": "Jbeltranleon <jbeltranleon@gmail.com>",
+  "author": "Jbeltran <jbeltranleon@gmail.com>",
   "license": "BSD-2-Clause",
   "bugs": {
     "url": "https://github.com/Jhonbeltran/animate-chat-node-platzi/issues"
   },
-  "homepage": "https://github.com/Jhonbeltran/animate-chat-node-platzi",
+  "homepage": "https://github.com/Jhonbeltran/animate-chat-node-platzi#readme",
   "dependencies": {
     "st": "^1.1.0"
+  },
+  "devDependencies": {
+    "browserify": "^13.0.1"
   }
 }

@@ -21,6 +21,10 @@ function onListening(){
 
 
 
+//Browserify me permite convertir archivos escritos como node a el browser
+
+//Va a ser usada en desarrollo nada mas $ npm install --save-dev browserify 
+
 
 
 
