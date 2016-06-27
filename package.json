@@ -15,5 +15,8 @@
   "bugs": {
     "url": "https://github.com/Jhonbeltran/animate-chat-node-platzi/issues"
   },
-  "homepage": "https://github.com/Jhonbeltran/animate-chat-node-platzi"
+  "homepage": "https://github.com/Jhonbeltran/animate-chat-node-platzi",
+  "dependencies": {
+    "st": "^1.1.0"
+  }
 }
