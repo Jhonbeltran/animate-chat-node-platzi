@@ -18,15 +18,3 @@ function onListening(){
 	console.log('☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢ ☢')
 	console.log(`El servidor ha iniciado y está escuchando en el puerto: ${port}`)
 }
-
-
-
-//Browserify me permite convertir archivos escritos como node a el browser
-
-//Va a ser usada en desarrollo nada mas $ npm install --save-dev browserify 
-
-
-
-
-
-
