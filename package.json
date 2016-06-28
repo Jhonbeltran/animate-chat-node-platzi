@@ -21,7 +21,8 @@
   "dependencies": {
     "course": "0.0.1",
     "st": "^1.1.0",
-    "webrtc2images": "^1.4.4"
+    "webrtc2images": "^1.4.4",
+    "xhr": "^2.2.0"
   },
   "devDependencies": {
     "browserify": "^13.0.1"

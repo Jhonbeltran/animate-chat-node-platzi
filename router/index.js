@@ -19,13 +19,21 @@ const mount = st ({
 	passtrough: true
 })
 
+
+//Voy a definir la ruta que me va a recibir el objeto que yo voy a enviar desde el cliente
+router.post('/process', function(req, res) {
+	//Los req y res en course son http basicos no como los de express que son modificados
+	/*Voy a trabajar con un modulo que nos va ayudar con lo de ajax (modulo xhr
+	El cual es una abstracción muy basica de ajax de js)*/
+})
+
 function onRequest(req, res) {
 	mount(req, res, function (err) {
 		if (err) return res.emd(err, message)
 		
 		router(req, res, function(err) {
 			if(err)return fail(err, res)
-				
+
 			//Else
 			res.statusCode = 404
 			res.end('Not found '+req.url)
