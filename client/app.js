@@ -27,10 +27,3 @@ record.addEventListener('click', function(e) {
 	})
 
 }, false)
-
-
-//Vamos a usar browserify para que lo escrito en node pueda verse como js en el browser
-
-/*Usaremos course(que es muy similar a express), course nos va a ayudar con la creacion de las 
-rutas course tambien hace parte de los modulos o librerias que se conectan con las librerias 
-core que me permiten resolver problemas especificos*/

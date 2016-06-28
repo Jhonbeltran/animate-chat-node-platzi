@@ -1,5 +1,10 @@
 //Llamo el modulo st
 const st = require('st')
+//Agrego course para el manejo de rutas dinamicas
+const course = require('course')
+
+
+const router = course()
 
 //Uso el modulo path para hacer uso de las rutas
 const path = require('path')
@@ -8,16 +13,33 @@ const path = require('path')
 
 const mount = st ({
 	path: path.join(__dirname, '..', 'public'),
-	index: 'index.html'
+	index: 'index.html',
+	/*si no hay un archivo en el servidor estatico, continue la ejecucion
+	para que no lance directamente un 404 pues posiblemente yo quiero que la logica siga*/
+	passtrough: true
 })
 
 function onRequest(req, res) {
 	mount(req, res, function (err) {
 		if (err) return res.emd(err, message)
-		//Else
-		res.statusCode = 404
-		res.end('Not found '+req.url)
+		
+		router(req, res, function(err) {
+			if(err)return fail(err, res)
+				
+			//Else
+			res.statusCode = 404
+			res.end('Not found '+req.url)
+		})
+
+		
 	})
+}
+
+//Hacemos un modulo fail para responder a errores 500 o errores de servidor
+function fail(err, res) {
+	res.statusCode = 500
+	res.setHeader('Content-Type', 'text/plain')
+	res.end(err, message)
 }
 
 //Esta es la forma de exportar una funcion a otro que va a hacer el llamado
