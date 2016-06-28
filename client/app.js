@@ -1,5 +1,8 @@
 //Esto es una clase
 const Webrtc2Images = require('webrtc2images')
+//Referenciamos el modulo xhr
+const xhr = require('xhr') 
+
 
 const rtc = new Webrtc2Images({
 	with: 200,
@@ -23,7 +26,22 @@ record.addEventListener('click', function(e) {
 
 	//grabar
 	rtc.recordVideo(function(err, frames){
-		console.log(frames)
+		//Los frames estan almacenados en un arreglo
+		//Vamos a crear el codigo que nos permite enviar desde el cliente hacia el servidor
+		xhr({
+			uri: '/process',
+			method: 'post',
+			header: {'Content-Type','aplication/json'},
+			body: JSON.stringify({ images: frames})
+		}, function(err, res, body){
+
+			if (err) return logError(err)
+
+			console.log(JSON.parse(body))
+
+		})
+
+		//Vamos a usar el modulo de body para procesar respuestas
 	})
 
 }, false)
