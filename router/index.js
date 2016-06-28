@@ -1,8 +1,11 @@
+'use strict'
+
 //Llamo el modulo st
 const st = require('st')
 //Agrego course para el manejo de rutas dinamicas
 const course = require('course')
-
+//Requiero jsonbody
+const jsonBody = require('body/json')
 
 const router = course()
 
@@ -14,22 +17,26 @@ const path = require('path')
 const mount = st ({
 	path: path.join(__dirname, '..', 'public'),
 	index: 'index.html',
-	/*si no hay un archivo en el servidor estatico, continue la ejecucion
-	para que no lance directamente un 404 pues posiblemente yo quiero que la logica siga*/
 	passtrough: true
 })
 
 
 //Voy a definir la ruta que me va a recibir el objeto que yo voy a enviar desde el cliente
 router.post('/process', function(req, res) {
-	//Los req y res en course son http basicos no como los de express que son modificados
-	/*Voy a trabajar con un modulo que nos va ayudar con lo de ajax (modulo xhr
-	El cual es una abstracción muy basica de ajax de js)*/
+	jsonBody(req, res, {limit: 3 * 1024 * 1024 }, function(err, body) {
+		if(err) return fail(err, res)
+
+		console.log(body)
+
+		//Enviamos una respuesta
+		res.setHeader('Content-Type', 'application/json')
+		res.end(JSON.stringify({ok:true}))
+	})
 })
 
 function onRequest(req, res) {
 	mount(req, res, function (err) {
-		if (err) return res.emd(err, message)
+		if (err) return fail(err, res)
 		
 		router(req, res, function(err) {
 			if(err)return fail(err, res)

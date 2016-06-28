@@ -14,7 +14,7 @@ const rtc = new Webrtc2Images({
 })
 
 rtc.startVideo(function(err) {
-
+	if (err) return logError(err)
 })
 
 const record = document.querySelector('#record')
@@ -28,11 +28,14 @@ record.addEventListener('click', function(e) {
 	rtc.recordVideo(function(err, frames){
 		//Los frames estan almacenados en un arreglo
 		//Vamos a crear el codigo que nos permite enviar desde el cliente hacia el servidor
+		if (err) return logError(err)
+
 		xhr({
 			uri: '/process',
 			method: 'post',
-			header: {'Content-Type','aplication/json'},
+			header: {'Content-Type':'application/json'},
 			body: JSON.stringify({ images: frames})
+
 		}, function(err, res, body){
 
 			if (err) return logError(err)
@@ -41,7 +44,10 @@ record.addEventListener('click', function(e) {
 
 		})
 
-		//Vamos a usar el modulo de body para procesar respuestas
 	})
 
 }, false)
+
+function logError (err) {
+  console.error(err)
+}
