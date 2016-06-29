@@ -17,3 +17,6 @@ trascription from node to js.
 * 'xhr' : This module is a basic abstraction of ajax.
 
 * 'body' : With this module we can process the requests reaching the server of different types
+
+* 'neo-async' : (the new async) this module make easier the workflow with async functions to process
+the images and create the video 

@@ -37,6 +37,9 @@ router.post('/process', function(req, res) {
 	jsonBody(req, res, {limit: 3 * 1024 * 1024 }, function(err, body) {
 		if(err) return fail(err, res)
 
+		//Verificamos si nos estan llegando imagenes al servidor
+		if(Array.isArray(body.images)){
+
 		//Vamos a empezar a trabajar con el helper
 		//Llamamos a la funcion .convertVideo que está en helper/index.js
 		let converter = helper.convertVideo(body.images)
@@ -48,6 +51,11 @@ router.post('/process', function(req, res) {
 			//De esta manera envia el video, que por ahora es solo una cadena de caracteres
 			res.end(JSON.stringify({video: video}))
 		})
+
+		}else{
+			res.statusCode = 500
+			res.end(JSON.stringify({ error: 'parameter `images` is required' }))
+		}
 	})
 })
 
