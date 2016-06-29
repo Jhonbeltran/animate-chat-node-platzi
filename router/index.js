@@ -4,9 +4,11 @@
 const st = require('st')
 //Agrego course para el manejo de rutas dinamicas
 const course = require('course')
-//Requiero jsonbody
+//Requiero jsonbody(de body, Body parsing)
 const jsonBody = require('body/json')
 
+
+//Course me genera una funcion que me permite crear un enrrutador (router)
 const router = course()
 
 //Uso el modulo path para hacer uso de las rutas
@@ -17,17 +19,21 @@ const path = require('path')
 const mount = st ({
 	path: path.join(__dirname, '..', 'public'),
 	index: 'index.html',
+	/*Si no hay un archivo en el server estatico, continue la ejecucion*/
 	passtrough: true
 })
 
 
 //Voy a definir la ruta que me va a recibir el objeto que yo voy a enviar desde el cliente
 router.post('/process', function(req, res) {
+	//Modificamos la peticion que llega, de la siguiente forma
+	//El limit por defecto es de 1mb, nosotros necesitamos 3mb
 	jsonBody(req, res, {limit: 3 * 1024 * 1024 }, function(err, body) {
 		if(err) return fail(err, res)
 
 		console.log(body)
 
+		//siempre que trabajemos con rutas debemos enviar una respuesta
 		//Enviamos una respuesta
 		res.setHeader('Content-Type', 'application/json')
 		res.end(JSON.stringify({ok:true}))
@@ -35,9 +41,11 @@ router.post('/process', function(req, res) {
 })
 
 function onRequest(req, res) {
+	//Servidor estatico
 	mount(req, res, function (err) {
 		if (err) return fail(err, res)
 		
+		//Rutas dinamicas
 		router(req, res, function(err) {
 			if(err)return fail(err, res)
 

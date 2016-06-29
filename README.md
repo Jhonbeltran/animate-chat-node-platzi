@@ -12,7 +12,7 @@ trascription from node to js.
 
 * 'webrtc2images' : Use for catch the frames that we gonna use in the small "videos"
 
-* 'course' : (Similar to 'express') Use for handle de routes of the application
+* 'course' : (Similar to 'express') Use for handle de routes of the application, but the routes are standar.
 
 * 'xhr' : This module is a basic abstraction of ajax.
 
