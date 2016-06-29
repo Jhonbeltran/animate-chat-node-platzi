@@ -7,6 +7,12 @@ const course = require('course')
 //Requiero jsonbody(de body, Body parsing)
 const jsonBody = require('body/json')
 
+//Vamos a requerir el helper 
+//Usamos los dos puntos porque está un directorio mas arriba
+//Cuando requerimos un directorio el nos va a buscar el archivo index
+const helper = require('../helper')
+
+
 
 //Course me genera una funcion que me permite crear un enrrutador (router)
 const router = course()
@@ -31,12 +37,17 @@ router.post('/process', function(req, res) {
 	jsonBody(req, res, {limit: 3 * 1024 * 1024 }, function(err, body) {
 		if(err) return fail(err, res)
 
-		console.log(body)
+		//Vamos a empezar a trabajar con el helper
+		//Llamamos a la funcion .convertVideo que está en helper/index.js
+		let converter = helper.convertVideo(body.images)
 
-		//siempre que trabajemos con rutas debemos enviar una respuesta
-		//Enviamos una respuesta
-		res.setHeader('Content-Type', 'application/json')
-		res.end(JSON.stringify({ok:true}))
+		//Asi trabajamos con el event emitter
+		//Se va a ejecutar cada vez que se emita el evento video
+		converter.on('video', function(video) {
+			res.setHeader('Content-Type', 'application/json')
+			//De esta manera envia el video, que por ahora es solo una cadena de caracteres
+			res.end(JSON.stringify({video: video}))
+		})
 	})
 })
 
