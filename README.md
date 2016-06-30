@@ -20,3 +20,5 @@ trascription from node to js.
 
 * 'neo-async' : (the new async) this module make easier the workflow with async functions to process
 the images and create the video 
+
+* 'data-uri-to-buffer' : This module help us to convert the images from base64 to buffer

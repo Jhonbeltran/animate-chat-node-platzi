@@ -24,6 +24,7 @@
     "data-uri-to-buffer": "0.0.4",
     "neo-async": "^1.8.2",
     "st": "^1.1.0",
+    "uuid": "^2.0.2",
     "webrtc2images": "^1.4.4",
     "xhr": "^2.2.0"
   },
