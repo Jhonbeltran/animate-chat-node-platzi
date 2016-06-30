@@ -7,7 +7,7 @@ const EventEmitter = require('events').EventEmitter
 const async = require('neo-async')
 
 //Requerimos data-uri-to-buffer para hacer la conversion de imagenes
-const dataURIBuffer= requiere('data-uri-to-buffer')
+const dataURIBuffer= require('data-uri-to-buffer')
 
 //Vamos a exportar una funcion
 module.exports= function(images) {
@@ -35,7 +35,7 @@ module.exports= function(images) {
 	function decodeImage(image, done) {
 		// Vamos a convertir la imagen a buffer 
 		//y la vamos a guardar en el sistema de archivos con un nombre (unico)
-		
+
 	}
 	
 	//Creamos el video con las imagenes
