@@ -17,6 +17,9 @@ const os = require('os')
 const fs = require('fs')
 const path = require('path')
 
+//Llamamos la funcion de lista
+const listFiles = require('./list')
+
 
 //Vamos a exportar una funcion
 module.exports= function(images) {
@@ -86,7 +89,15 @@ module.exports= function(images) {
 	
 	//Limpieza de archivos temporales
 	function cleanup(done) {
+		events.emit('log', 'Cleaning up')
+
+		//Este metodo viene de list.js
+		listFiles(tmpDir, baseName, function(err, files) {
+			if (err) return done(err)
+
+			// Borramos los archivos
 		done()
+		})
 	}
 
 	//La ultima, como es el callback final, solamente va a recibir el error.
