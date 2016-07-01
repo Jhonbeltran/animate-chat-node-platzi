@@ -20,6 +20,7 @@
   "homepage": "https://github.com/Jhonbeltran/animate-chat-node-platzi#readme",
   "dependencies": {
     "body": "^5.1.0",
+    "concat-stream": "^1.5.1",
     "course": "0.0.1",
     "data-uri-to-buffer": "0.0.4",
     "neo-async": "^1.8.2",

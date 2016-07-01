@@ -23,6 +23,10 @@ const listFiles = require('./list')
 //llamamos la funcion de ffmpeg
 const ffmpeg = require('./ffmpeg')
 
+//Requerimos la funcion concat-stream 
+//Nos sirve para agarrar todo un stream y meterlo en un solo buffer
+const concat = require('concat-stream')
+
 
 //Vamos a exportar una funcion
 module.exports= function(images) {
@@ -37,6 +41,9 @@ module.exports= function(images) {
 
 	//Directorio temporal de imagenes
 	let tmpDir = os.tmpDir()
+
+	//Variable que va a contener el video final
+	let video
 
 	//Vamos a definir el workflow inicial de lo que vamos a trabajar
 	async.series([
@@ -90,7 +97,15 @@ module.exports= function(images) {
 	
 	//Codifico el video al formato de la web
 	function encodeVideo(done) {
-		done()
+		let fileName = `${baseName}.webm`
+		let rs = fs.createReadStream(path.join(tmpDir, fileName))
+
+		rs.pipe(concat(function(videBuffer) {
+			video = `data:video/webm;base64,${videoBuffer.toString('base64')}`
+			done()
+		}))
+		
+		rs.on('error', done)
 	}
 	
 	//Limpieza de archivos temporales
@@ -124,10 +139,10 @@ module.exports= function(images) {
 
 	//La ultima, como es el callback final, solamente va a recibir el error.
 	function convertFinished(err){
-		setTimeout(function(){
-		//De esta forma emitimos el evento
-		events.emit('video', 'this will be the encoded video')
-		}, 500)
+		if(err) return events.emit('error', err)
+		//Else
+		events.emit('video', video)
+
 	}
 
 
