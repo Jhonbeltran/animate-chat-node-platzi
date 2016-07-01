@@ -20,6 +20,9 @@ const path = require('path')
 //Llamamos la funcion de lista
 const listFiles = require('./list')
 
+//llamamos la funcion de ffmpeg
+const ffmpeg = require('./ffmpeg')
+
 
 //Vamos a exportar una funcion
 module.exports= function(images) {
@@ -39,8 +42,8 @@ module.exports= function(images) {
 	async.series([
 		decodeImages,
 		createVideo,
-		encodeVideo,
-		cleanup
+		encodeVideo/*,
+		cleanup*/
 	], convertFinished)
 
 	//Debo decodificar las imagenes de base64(Data uri) a buffer(formato binario)
@@ -79,7 +82,10 @@ module.exports= function(images) {
 	
 	//Creamos el video con las imagenes
 	function createVideo(done) {
-		done()
+		ffmpeg({
+			baseName: baseName,
+			folder: tmpDir
+		}, done)
 	}
 	
 	//Codifico el video al formato de la web
