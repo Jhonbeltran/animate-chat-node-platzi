@@ -22,3 +22,11 @@ trascription from node to js.
 the images and create the video 
 
 * 'data-uri-to-buffer' : This module help us to convert the images from base64 to buffer
+
+* 'uuid': This module give us a unique name for each images
+
+* 'handlebars' : This module works on the client side and help us with the messages(video and text) that we gonna to send 
+
+* 'hbsfy' : This is a trasnformer of handlebars that works with browserify
+
+* 'domify' : This module makes a convertion from strings(html) to DOM elements
