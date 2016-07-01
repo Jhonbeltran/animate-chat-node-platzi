@@ -1,10 +1,10 @@
 (function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-//Esto es una clase
-const Webrtc2Images = require('webrtc2images')
-//Referenciamos el modulo xhr
+//Referenciamos el modulo xhr que nos va ayudar con el ajax, diseñado para usarse con browserify
 const xhr = require('xhr') 
 
-
+//Esto es una clase
+const Webrtc2Images = require('webrtc2images')
+//Instanciamos un objeto de la clase Webrtc2Images
 const rtc = new Webrtc2Images({
 	with: 200,
 	heigth: 200,
@@ -13,6 +13,7 @@ const rtc = new Webrtc2Images({
 	quality: 0.4,
 	interval: 200
 })
+
 
 rtc.startVideo(function(err) {
 	if (err) return logError(err)
@@ -25,12 +26,14 @@ record.addEventListener('click', function(e) {
 	//Con esto vamos a prevenir el funcionamiento por defecto del boton
 	e.preventDefault()
 
-	//grabar
+	//Llamamos la funcionalidad del modulo rtc que nos permite grabar
 	rtc.recordVideo(function(err, frames){
 		//Los frames estan almacenados en un arreglo
 		//Vamos a crear el codigo que nos permite enviar desde el cliente hacia el servidor
 		if (err) return logError(err)
 
+		//Definimos la ruta del lado del cliente
+		//(Desde el lado del cliente, hacia el servidor)
 		xhr({
 			uri: '/process',
 			method: 'post',
@@ -52,6 +55,10 @@ record.addEventListener('click', function(e) {
 function logError (err) {
   console.error(err)
 }
+
+//Para convertir este archivo de manera node a un js que pueda entender el navegador usamos:
+//$ browserify client/app.js -o public/app.js
+//O usamos desde npm el comando que definimos como  $ npm run build-js
 },{"webrtc2images":2,"xhr":12}],2:[function(require,module,exports){
 var Streamer = require('./lib/streamer');
 var Recorder = require('./lib/recorder');

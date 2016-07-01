@@ -67,12 +67,12 @@ module.exports= function(images) {
 		 el callback va a ver como primer argumento un error,
 		 asi que va a romper la cadena de ejecucion, 
 		 de esta manera con streams vamos a poder parar la cadena de llamado asincrono*/
-		ws.on('error', done)
-		/*Terminamos el stream pasandole el buffer y cuando termine de pasar el buffer,
+		 /*Terminamos el stream pasandole el buffer y cuando termine de pasar el buffer,
 		vamos a ejecutar el metodo done*/
-		ws.end(buffer, done)
+		ws.on('error', done)
+      	.end(buffer, done)
 
-		events.emit('log', `Converting ${fileName}`)
+		events.emit('log', console.log(`Converting ${fileName}`))
 
 
 	}
@@ -89,14 +89,30 @@ module.exports= function(images) {
 	
 	//Limpieza de archivos temporales
 	function cleanup(done) {
-		events.emit('log', 'Cleaning up')
+		events.emit('log', console.log('Cleaning up'))
 
 		//Este metodo viene de list.js
 		listFiles(tmpDir, baseName, function(err, files) {
 			if (err) return done(err)
 
-			// Borramos los archivos
-		done()
+			//Con esta funcion nombrada vamos a borrar las imagenes
+			deleteFiles(files, done)
+
+		})
+	}
+
+	function deleteFiles(files, done) {
+		async.each(files, deleteFile, done)
+	}
+
+	function deleteFile(file, done){
+		events.emit('log', console.log(`Deleting ${file}`))
+
+		//Usamos .unlink para borrar un archivo
+		fs.unlink(path.join(tmpDir, file), function(err) {
+			//Ignoramos el error, pues no es importante
+
+			done()
 		})
 	}
 
@@ -105,7 +121,7 @@ module.exports= function(images) {
 		setTimeout(function(){
 		//De esta forma emitimos el evento
 		events.emit('video', 'this will be the encoded video')
-		}, 5000)
+		}, 500)
 	}
 
 
