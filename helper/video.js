@@ -49,8 +49,8 @@ module.exports= function(images) {
 	async.series([
 		decodeImages,
 		createVideo,
-		encodeVideo/*,
-		cleanup*/
+		encodeVideo,
+		cleanup
 	], convertFinished)
 
 	//Debo decodificar las imagenes de base64(Data uri) a buffer(formato binario)
@@ -100,7 +100,9 @@ module.exports= function(images) {
 		let fileName = `${baseName}.webm`
 		let rs = fs.createReadStream(path.join(tmpDir, fileName))
 
-		rs.pipe(concat(function(videBuffer) {
+		events.emit('log', console.log(`Encoding video ${fileName}`))
+
+		rs.pipe(concat(function(videoBuffer) {
 			video = `data:video/webm;base64,${videoBuffer.toString('base64')}`
 			done()
 		}))
