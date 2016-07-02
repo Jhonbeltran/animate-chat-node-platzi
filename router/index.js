@@ -29,35 +29,9 @@ const mount = st ({
 	passtrough: true
 })
 
+//Hemos eliminado la funcionalidad ajax de nuestra aplicacion
+//Vamos a hacerlo todo en tiempo real!
 
-//Voy a definir la ruta que me va a recibir el objeto que yo voy a enviar desde el cliente
-router.post('/process', function(req, res) {
-	//Modificamos la peticion que llega, de la siguiente forma
-	//El limit por defecto es de 1mb, nosotros necesitamos 3mb
-	jsonBody(req, res, {limit: 3 * 1024 * 1024 }, function(err, body) {
-		if(err) return fail(err, res)
-
-		//Verificamos si nos estan llegando imagenes al servidor
-		if(Array.isArray(body.images)){
-
-		//Vamos a empezar a trabajar con el helper
-		//Llamamos a la funcion .convertVideo que está en helper/index.js
-		let converter = helper.convertVideo(body.images)
-
-		//Asi trabajamos con el event emitter
-		//Se va a ejecutar cada vez que se emita el evento video
-		converter.on('video', function(video) {
-			res.setHeader('Content-Type', 'application/json')
-			//De esta manera envia el video, que por ahora es solo una cadena de caracteres
-			res.end(JSON.stringify({video: video}))
-		})
-
-		}else{
-			res.statusCode = 500
-			res.end(JSON.stringify({ error: 'parameter `images` is required' }))
-		}
-	})
-})
 
 function onRequest(req, res) {
 

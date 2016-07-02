@@ -1,8 +1,8 @@
 //Obtenemos el cliente de socket.io
 const io = require('socket.io-client')
 
-//Referenciamos el modulo xhr que nos va ayudar con el ajax, diseñado para usarse con browserify
-const xhr = require('xhr')
+//Modulo de uuid
+const uuid = require('uuid')
 
 //Requerimos domify para poder mostrar el mensaje
 const domify = require('domify')
@@ -13,8 +13,12 @@ const Webrtc2Images = require('webrtc2images')
 //Requerimos el template de mensaje
 const messageTpl = require('./templates/message.hbs')
 
-//Nos conectamos con socket.io-client
-io.connect()
+//Obtenemos el socket de la conexion
+//El socket va a permitirme conectarme con el servidor
+const socket = io.connect()
+
+//Vamos a definir nuestro id para diferenciar los mensajes de los demas y el mio
+const id = uuid.v4()
 
 //Instanciamos un objeto de la clase Webrtc2Images
 const rtc = new Webrtc2Images({
@@ -43,7 +47,15 @@ form.addEventListener('submit', function (e) {
 }, false)
 
 
-//Ahora tenemos la logica del boton record dentro de una funcion
+//Cuando yo reciba un mensaje del servidor
+socket.on('message', addMessage)
+
+//Para poder ver mi propio mensaje
+socket.io('message', function(message) {
+  if(message.id == id){
+    addMessage(message)
+  }
+})
 
 //GRABAMOS EL VIDEO
 function record () {
@@ -55,32 +67,10 @@ function record () {
   //Llamamos la funcionalidad del modulo rtc que nos permite grabar
   rtc.recordVideo(function (err, frames) {
     //Los frames estan almacenados en un arreglo
-    //Vamos a crear el codigo que nos permite enviar desde el cliente hacia el servidor
     if (err) return logError(err)
-
-    //Definimos la ruta del lado del cliente
-    //(Desde el lado del cliente, hacia el servidor)
-
-    //ENVIAMOS LAS IMAGENES AL SERVIDOR
-    xhr({
-      uri: '/process',
-      method: 'post',
-      headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ images: frames }),
-    }, function (err, res, body) {
-      if (err) return logError(err)
-
-      //EL SERVIDOR NOS RETORNA EL VIDEO
-      body = JSON.parse(body)
-
-      //Y CUANDO YA TENEMOS EL VIDEO AGREGAMOS EL MENSAJE EN EL CHAT
-      if (body.video) {
-        //Creamos una nueva funcion para enviar un video por cada mensaje
-        addMessage({ message: message, video: body.video })
-      }
+      //Despues de grabar el video vamos a emitir un evento
+      socket.emit('message', { id: id, message: message, frames: frames})
     })
-
-  })
 }
 
 function addMessage (message) {
