@@ -82,13 +82,14 @@ module.exports= function(images) {
 		ws.on('error', done)
       	.end(buffer, done)
 
-		events.emit('log', console.log(`Converting ${fileName}`))
+		events.emit('log', `Converting ${fileName}`)
 
 
 	}
 	
 	//Creamos el video con las imagenes
 	function createVideo(done) {
+		events.emit('log', 'Creating video')
 		ffmpeg({
 			baseName: baseName,
 			folder: tmpDir
@@ -100,7 +101,7 @@ module.exports= function(images) {
 		let fileName = `${baseName}.webm`
 		let rs = fs.createReadStream(path.join(tmpDir, fileName))
 
-		events.emit('log', console.log(`Encoding video ${fileName}`))
+		events.emit('log', `Encoding video ${fileName}`)
 
 		rs.pipe(concat(function(videoBuffer) {
 			video = `data:video/webm;base64,${videoBuffer.toString('base64')}`
@@ -112,7 +113,7 @@ module.exports= function(images) {
 	
 	//Limpieza de archivos temporales
 	function cleanup(done) {
-		events.emit('log', console.log('Cleaning up'))
+		events.emit('log', 'Cleaning up')
 
 		//Este metodo viene de list.js
 		listFiles(tmpDir, baseName, function(err, files) {
@@ -129,7 +130,7 @@ module.exports= function(images) {
 	}
 
 	function deleteFile(file, done){
-		events.emit('log', console.log(`Deleting ${file}`))
+		events.emit('log', `Deleting ${file}`)
 
 		//Usamos .unlink para borrar un archivo
 		fs.unlink(path.join(tmpDir, file), function(err) {

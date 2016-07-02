@@ -15,7 +15,7 @@ module.exports = function(server) {
 	const io = socketio(server)
 
 	//Funcionalidad de la base de datos
-	const
+	const db = database()
 
 	//socket.io trabaja con un patron de eventemitter
 

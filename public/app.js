@@ -52,7 +52,7 @@ form.addEventListener('submit', function (e) {
 socket.on('message', addMessage)
 
 //Para poder ver mi propio mensaje
-socket.io('message', function(message) {
+socket.on('messageack', function(message) {
   if(message.id == id){
     addMessage(message)
   }
