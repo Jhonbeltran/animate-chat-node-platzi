@@ -60,6 +60,10 @@ router.post('/process', function(req, res) {
 })
 
 function onRequest(req, res) {
+
+	//Para no tener conflictos con socket.io
+	if (req.url.startsWith('/socket.io')) return  
+
 	//Servidor estatico
 	mount(req, res, function (err) {
 		if (err) return fail(err, res)

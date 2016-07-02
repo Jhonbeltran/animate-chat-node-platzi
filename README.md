@@ -30,3 +30,7 @@ the images and create the video
 * 'hbsfy' : This is a trasnformer of handlebars that works with browserify
 
 * 'domify' : This module makes a convertion from strings(html) to DOM elements
+
+* 'socket.io' : It's a library that let me work with websockets to easy(server)
+
+* 'socket.io-client' : It's a library that let me work with websockets to easy(client)

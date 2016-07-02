@@ -1,3 +1,6 @@
+//Obtenemos el cliente de socket.io
+const io = require('socket.io-client')
+
 //Referenciamos el modulo xhr que nos va ayudar con el ajax, diseñado para usarse con browserify
 const xhr = require('xhr')
 
@@ -9,6 +12,9 @@ const Webrtc2Images = require('webrtc2images')
 
 //Requerimos el template de mensaje
 const messageTpl = require('./templates/message.hbs')
+
+//Nos conectamos con socket.io-client
+io.connect()
 
 //Instanciamos un objeto de la clase Webrtc2Images
 const rtc = new Webrtc2Images({
