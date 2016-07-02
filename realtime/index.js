@@ -1,5 +1,8 @@
 'use strict'
 
+//Requerimos la base de datos
+const database = require('../database')
+
 //Este es el modulo que vamos a utilizar para hacer la comunicacion real time
 const socketio = require('socket.io')
 
@@ -11,7 +14,8 @@ module.exports = function(server) {
 	//Le pasamos la instancia del servidor
 	const io = socketio(server)
 
-
+	//Funcionalidad de la base de datos
+	const
 
 	//socket.io trabaja con un patron de eventemitter
 
@@ -37,6 +41,11 @@ module.exports = function(server) {
 			converter.on('video', function(video){
 				delete message.frames
 				message.video = video
+
+				//Antes de enciar el video lo guardamos en la base de datos
+				db.save(message, function(err){
+					
+				})
 
 				//Para envirarselo a todos lo enviamos a traves de un broadcast
 				//broadcast(mensaje a todos los que estan conectados)
