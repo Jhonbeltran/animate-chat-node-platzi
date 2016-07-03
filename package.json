@@ -32,7 +32,9 @@
     "socket.io-client": "^1.4.8",
     "st": "^1.1.0",
     "uuid": "^2.0.2",
-    "webrtc2images": "^1.4.4"
+    "webrtc2images": "^1.4.4",
+    "browserify": "^13.0.1",
+    "hbsfy": "^2.7.0"
   },
   "devDependencies": {
     "browserify": "^13.0.1",
