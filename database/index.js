@@ -5,6 +5,7 @@ const level = require('level')
 //Con este "Plugin" convierto mi db persistente en una base de datos temporal
 const ttl = require('level-ttl')
 const uuid = require('uuid')
+const concat = require('concat-stream')
 
 
 module.exports = function(options){
@@ -13,7 +14,7 @@ module.exports = function(options){
 	/*Definimos que la duracion del mensaje va a ser pasada por el objeto, o que
 	va a ser de 10 min*/
 	let duration = options.duration || 10 * 60 * 1000
-
+	let limit = options.limit || 10
 	//Indicamos el archivo en el que se va a almacenar la base de datos
 	//El checkFrequency lo vamos a usar para que se verifique si hay archivos para borrar
 	const db = ttl(level('./messages.db'), {checkFrequency: 10000})
@@ -37,9 +38,20 @@ module.exports = function(options){
 	}
 
 	//Listar el mensaje
-	function list(callback) {
-		callback()
-	}
+	function list (callback) {
+    let rs = db.createValueStream({
+      limit: limit,
+      valueEncoding: 'json',
+      reverse: true,
+      gt: 'message'
+    })
+
+    rs.pipe(concat(function (messages) {
+      callback(null, messages.reverse())
+    }))
+
+    rs.on('error', callback)
+  }
 
 	return{
 		save: save,

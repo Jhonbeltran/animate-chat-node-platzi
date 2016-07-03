@@ -58,6 +58,10 @@ socket.on('messageack', function(message) {
   }
 })
 
+socket.on('messages', function (messages) {
+  messages.forEach(addMessage)
+})
+
 //GRABAMOS EL VIDEO
 function record () {
   //Vamos a capturar el mensaje para poderlo mostrar en pantalla

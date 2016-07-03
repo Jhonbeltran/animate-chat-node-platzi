@@ -28,6 +28,11 @@ module.exports = function(server) {
 	function onConnection(socket){
 		console.log(`Client connected ${socket.id}`)
 
+		db.list(function (err, messages) {
+      		if (err) return console.error(err)
+
+      		socket.emit('messages', messages)
+    	})
 		//Cuando alguien se conecta vamos a recibir un mensaje
 		socket.on('message', function(message){
 
