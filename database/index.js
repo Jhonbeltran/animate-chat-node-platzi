@@ -2,15 +2,21 @@
 
 //Requerimos level como nuestra base de datos
 const level = require('level')
+//Con este "Plugin" convierto mi db persistente en una base de datos temporal
+const ttl = require('level-ttl')
 const uuid = require('uuid')
 
 
 module.exports = function(options){
 	//Si no llega nada  a la funcion vamos a crear unas opciones vacias
 	options = options || {}
+	/*Definimos que la duracion del mensaje va a ser pasada por el objeto, o que
+	va a ser de 10 min*/
+	let duration = options.duration || 10 * 60 * 1000
 
 	//Indicamos el archivo en el que se va a almacenar la base de datos
-	const db = level('./messages.db')
+	//El checkFrequency lo vamos a usar para que se verifique si hay archivos para borrar
+	const db = ttl(level('./messages.db'), {checkFrequency: 10000})
 
 	//Esta funcion va a guardar nuestro mensaje
 	function save(message, callback) {
@@ -22,7 +28,8 @@ module.exports = function(options){
 
 		//le indicamos dentro de las opciones el encoding 
 		let options = {
-			valueEncoding: 'json'
+			valueEncoding: 'json',
+			ttl: duration
 		}
 
 		//guardamos el mensaje en la base de datos

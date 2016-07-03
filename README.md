@@ -36,3 +36,5 @@ the images and create the video
 * 'socket.io-client' : It's a library that let me work with websockets to easy(client)
 
 * 'level' : With level we going to store the messages (level is not a db engine) is a db of key value
+
+* 'level-ttl': Have an option called ttl (time to live) it's use to delete registres after a time that we defined
